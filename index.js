@@ -1,0 +1,10 @@
+//use inquirer to grab user input
+//with user input, generate html file
+//when email address is clicked, open default email with info
+//when Github link is clicked, it opens up their Github profile in a new tab
+
+//when the app starts, we ask the manager info(name, employee ID, email address, and office number)
+//after we get manager info, let user pick between making an engineer, intern or build team
+//if user pick engineer, get engineer info(name, ID, email, Github), then let user pick between making an engineer, intern or build team
+//if user pick intern, get intern info(name, ID, email, school), then let user pick between making an engineer, intern or build team
+//when user is finished with info, exit inquirer, generate html
