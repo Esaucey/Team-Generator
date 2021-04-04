@@ -3,15 +3,63 @@ const fs = require('fs');
 const inquirer = require('inquirer');
 inquirer
   .prompt([
+//manager info
     {
         type: 'input',
         name: 'managerName',
-        message: "What is the manage's name"
+        message: "What is the manager's name: "
     },
     {
         type: 'input',
         name: 'managerId',
-        message: "What is the manager's ID number"
+        message: "What is the manager's ID number: "
+    },
+    {
+        type: 'input',
+        name: 'managerEmail',
+        message: "What is the manager's e-mail: "
+    },
+    {
+        type: 'input',
+        name: 'managerON',
+        message: "What is the manager's office number: "
+    },
+//engineer info
+    {
+        type: 'input',
+        name: 'engineerName',
+        message: "What is the engineer's name: "
+    },
+    {
+        type: 'input',
+        name: 'engineerId',
+        message: "What is the engineer's ID number: "
+    },
+    {
+        type: 'input',
+        name: 'engineerEmail',
+        message: "What is the engineer's e-mail: "
+    },
+    {
+        type: 'input',
+        name: 'engineerON',
+        message: "What is the engineer's office number: "
+    },
+//intern info
+    {
+        type: 'input',
+        name: 'internName',
+        message: "What is the intern's name: "
+    },
+    {
+        type: 'input',
+        name: 'internId',
+        message: "What is the intern's ID: "
+    },
+    {
+        type: 'input',
+        name: 'internSchool',
+        message: "What is the intern's school: "
     }
   ])
   .then(answers => {
