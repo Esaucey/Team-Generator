@@ -9,12 +9,12 @@ test("Can Manager extends Employee", () => {
 
 test("can we set officeNumber through Manager constructor", () => {
     const officeNumber = 2
-    const example = new Manager(officeNumber);
-    expect(example.officeNumber).toBe(officeNumber);
+    const example = new Manager("Sean", 0, "@mail", officeNumber);
+    expect(example.officeNumber).toBe( officeNumber);
 })
 
 test("Can we get Manager role through the getRole()", () => {
     const role = "Manager";
-    const example = new Manager(role);
+    const example = new Manager("Sean", 0, "@mail", 2);
     expect(example.getRole()).toBe(role);
 })

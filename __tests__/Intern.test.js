@@ -7,20 +7,14 @@ test("Can Intern extends Employee", () => {
     expect(typeof(example)).toBe("object");
 })
 
-test("can we set GitHub through Intern constructor", () => {
-    const school = "school name"
-    const example = new Intern(school);
-    expect(example.school).toBe(school);
-})
-
 test("Can we get Intern school through the getSchool()", () => {
     const school = "school name";
-    const example = new Intern(school);
-    expect(example.getSchool()).toBe(school);
+    const example = new Intern("Sean", 0, "@mail", school);
+    expect(example.school).toBe(school);
 })
 
 test("Can we get Intern role through the getRole()", () => {
     const role = "Intern";
-    const example = new Intern(role);
+    const example = new Intern("Sean", 0, "@mail", "school");
     expect(example.getRole()).toBe(role);
 })

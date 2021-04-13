@@ -10,18 +10,12 @@ test("Can Engineer extends Employee", () => {
 
 test("can we set GitHub through Engineer constructor", () => {
     const github = "username";
-    const example = new Engineer(github);
+    const example = new Engineer("Sean", 0, "@mail", github);
     expect(example.github).toBe(github);
-})
-
-test("Can we get engineer Github through the getGithub()", () => {
-    const github = "username";
-    const example = new Engineer(github);
-    expect(example.getGithub()).toBe(github);
 })
 
 test("Can we get engineer role through the getRole()", () => {
     const role = "Engineer";
-    const example = new Engineer(role);
+    const example = new Engineer("Sean", 0, "@mail", "role");
     expect(example.getRole()).toBe(role);
 })

@@ -1,7 +1,9 @@
 header {
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
-    background-color: red;
+    background-color: rgb(155, 212, 238);
 }
 
 section {

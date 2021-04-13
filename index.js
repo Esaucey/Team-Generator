@@ -7,12 +7,10 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 // const Employee = require('./lib/Employee');
 
-const internOutput = new Intern();
 const team = [];
-const choicesArray =[];
 
 async function addManager() {
-    await inquirer.prompt([
+    let answers = await inquirer.prompt([
         {
             type: 'input',
             name: 'managerName',
@@ -33,12 +31,25 @@ async function addManager() {
             name: 'managerON',
             message: "What is the manager's office number: "
         }
-    ]).then(answers => {
-        const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerON);
-        team.push(manager);
-    })
-    
-};
+    ])
+    const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerON);
+    team.push(`    
+        <div class="card-body">
+            <div class="card-title">
+                <h2>${manager.getRole()}</h2>
+            </div>
+            <div class="card-content">
+                <h3>Name: ${manager.getName()}</h3>
+                <h3>ID: ${manager.getId()}</h3>
+                <address>
+                <h3>E-mail: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></h3>
+                </address>
+                <h3>Office Number: ${manager.getOfficeNumber()}</h3>
+            </div>
+        </div>
+    `);
+    await whatsNext();
+}
 
 async function addEngineer() {
     let answers = await inquirer.prompt([ 
@@ -60,13 +71,26 @@ async function addEngineer() {
         {
             type: 'input',
             name: 'engineerON',
-            message: "What is the engineer's office number: "
+            message: "What is the engineer's Github: "
         }
     ])
-    const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerON);
-        team.push(engineer);
-        return engineer;
-
+        const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerON);
+        team.push(`    
+        <div class="card-body">
+             <div class="card-title">
+                 <h2>${engineer.getRole()}</h2>
+             </div>
+             <div class="card-content">
+                 <h3>Name: ${engineer.getName()}</h3>
+                 <h3>ID: ${engineer.getId()}</h3>
+                 <address>
+                 <h3>E-mail: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></h3>
+                 </address>
+                 <h3>Github Name: <a href="https://github.com/${engineer.getGithub()}">${engineer.getGithub()}</a></h3>
+             </div>
+        </div>
+    `);
+        await whatsNext();
 };
 
 async function addIntern() {
@@ -92,154 +116,99 @@ async function addIntern() {
             message: "What is the intern's school: "
         }
     ])
-    const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internON);
-    team.push(intern);
-    return intern;
+    const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
+    team.push(`    
+        <div class="card-body">
+            <div class="card-title">
+                <h2>${intern.getRole()}</h2>
+            </div>
+            <div class="card-content">
+                <h3>Name: ${intern.getName()}</h3>
+                <h3>ID: ${intern.getId()}</h3>
+                <address>
+                <h3>E-mail: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></h3>
+                </address>
+                <h3>School Name: ${intern.getSchool()}</h3>
+            </div>
+        </div>
+        `);
+    await whatsNext();
 }
 
 async function whatsNext() {
     let answers = await inquirer.prompt([
-      {
+        {
         type: 'list',
         name: 'next',
         message: "Adding more members",
         choices: ['Engineer', 'Intern', 'Complete']
-    }  
+        }  
     ])
-        choicesArray.push(answers.next);
-        return answers.next;
+     if (answers.next === "Engineer") {
+        await addEngineer();
+    } else if (answers.next === "Intern") {
+        await addIntern();
+    } else {
+        console.log("Complete!");
+    }
 };
-
-async function questionsRepeat() {
-    let count = 1;
-     for (let i = 0; i < count; i++) { 
-            if (choicesArray[i] === "Engineer") {
-                count++
-                await addEngineer();
-            } else if (choicesArray[i] === "Intern") {
-                count++
-                await addIntern();
-            } else {
-                
-            }
-            console.log(count);
-    };
-}
 
 function init() {
     addManager()
-    .then(answers => {
-        return whatsNext();
+    .then(next => {
+        let content = 
+`<!DOCTYPE html>
+<html>
+<head>
+<title>Team Generator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Team Generator</h1>
+    </header>
+    <section>
+        ${team.join("\n")}
+
+    <section>
+</body>
+</html>
+`;
+
+    let style = 
+`header {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(155, 212, 238);
+}
+
+section {
+    display: flex;
+    justify-content: center;
+}
+
+.card-body {
+    margin: 50px;
+    padding: 15px;
+    background-color: rgb(180, 180, 180);
+    border-radius: 2%;
+}
+
+.card-title {
+    text-align: center;
+    background-color: antiquewhite;
+}
+`;
+
+    fs.writeFile('dist/home.html', content, function (err) {
+    if (err) return console.log(err)
+  })
+    fs.writeFile('dist/style.css', style, function (err) {
+    if (err) return console.log(err)
+  })
     })
-    .then(answers => {
-        return questionsRepeat();
-    })
-    .then(answers => {
-        console.log(JSON.stringify(choicesArray));
-        
-    })
-    
-//     let content = 
-// `<!DOCTYPE html>
-// <html>
-// <head>
-// <title>Team Generator</title>
-// <link rel="stylesheet" href="style.css">
-// </head>
-// <body>
-//     <header>
-//         <h1>Team Generator</h1>
-//     </header>
-//     <section>
-//         <div class="card-body">
-//             <div class="card-title">
-//                 <h2>${managerOutput.getRole()}</h2>
-//             </div>
-//             <div class="card-content">
-//                 <h3>${data.managerName}</h3>
-//                 <h3>${data.managerId}</h3>
-//                 <address>
-//                 <a href="${data.managerEmail}"><h3>${data.managerEmail}</h3></a>
-//                 </address>
-//                 <h3>${data.managerON}</h3>
-//             </div>
-//         </div>
-
-//         <div class="card-body">
-//             <div class="card-title">
-//                 <h2>${engineerOutput.getRole()}</h2>
-//             </div>
-//             <div class="card-content">
-//                 <h3>${data.engineerName}</h3>
-//                 <h3>${data.engineerId}</h3>
-//                 <address>
-//                 <a href="${data.engineerEmail}"><h3>${data.engineerEmail}</h3></a>
-//                 </address>
-//                 <h3>${data.engineerON}</h3>
-//             </div>
-//         </div>
-
-//         <div class="card-body">
-//             <div class="card-title">
-//                 <h2>${internOutput.getRole()}</h2>
-//             </div>
-//             <div class="card-content">
-//                 <h3>${data.internName}</h3>
-//                 <h3>${data.internId}</h3>
-//                 <address>
-//                 <a href="${data.internEmail}"><h3>${data.internEmail}</h3></a>
-//                 </address>
-//                 <h3>${data.internSchool}</h3>
-//             </div>
-//         </div>
-    
-//     <section>
-// </body>
-// </html>
-// `;
-
-//     let style = 
-// `header {
-//     display: flex;
-//     justify-content: center;
-//     background-color: red;
-// }
-
-// section {
-//     display: flex;
-//     justify-content: center;
-// }
-
-// .card-body {
-//     margin: 50px;
-//     padding: 15px;
-//     background-color: rgb(180, 180, 180);
-//     border-radius: 2%;
-// }
-
-// .card-title {
-//     text-align: center;
-//     background-color: antiquewhite;
-// }
-// `;
-//     console.log(data.internName);
-//     fs.writeFile('dist/home.html', content, function (err) {
-//     if (err) return console.log(err)
-//   })
-//     fs.writeFile('dist/style.css', style, function (err) {
-//     if (err) return console.log(err)
-//   })
-  
 }
 
 init();
-
-//with user input, generate html file
-//when email address is clicked, open default email with info
-//when Github link is clicked, it opens up their Github profile in a new tab
-
-//when the app starts, we ask the manager info(name, employee ID, email address, and office number)
-//after we get manager info, let user pick between making an engineer, intern or build team
-//if user pick engineer, get engineer info(name, ID, email, Github), then let user pick between making an engineer, intern or build team
-//if user pick intern, get intern info(name, ID, email, school), then let user pick between making an engineer, intern or build team
-//when user is finished with info, exit inquirer, generate html.
